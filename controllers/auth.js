@@ -48,10 +48,10 @@ exports.signin = (req, res) => {
     //CREATE TOKEN
     const token = jwt.sign({ _id: user._id }, process.env.SECRET);
     //PUT TOKEN IN COOKIE
-    res.cookie("token", token, { expire: new Date() + 99999 }); //for testing we kept long expiry duration of cookie
+    res.cookie("token", token, { expire: new Date() + 9999  }); //for testing we kept long expiry duration of cookie
     // SEND DATA TO FRONTEND
-    const { _id, name, email, role } = user;
-    return res.json({ token, user: { _id, name, email, role } });
+    const { _id, name,lastname, email, role } = user;
+    return res.json({ token, user: { _id, name,lastname, email, role } });
   });
 };
 

@@ -17,7 +17,7 @@ exports.createCatagory = (req, res) => {
   catagory.save((err, cate) => {
     if (err || !catagory) {
       res.status(400).json({
-        error: "No Catagory Found",
+        error: "Failed to create catagory",
       });
     }
     res.json(cate);

@@ -27,7 +27,7 @@ router.get("/product/:productId", getProduct);
 router.get("/product/photo/:productId", photo);
 
 router.delete(
-  "/product/:productId/:userId",
+  "/product/delete/:productId/:userId",
   isSignedIn,
   isAuthenticated,
   isAdmin,

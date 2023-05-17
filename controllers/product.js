@@ -13,7 +13,7 @@ exports.getProductById = (req, res, next, id) => {
           message: "No Product found",
         });
       }
-      res.product = product;
+      req.product = product;
       next();
     });
 };
@@ -34,6 +34,7 @@ exports.createProduct = (req, res) => {
     const { name, description, price, catagory, stock } = fields;
     //validation check or you can use express validator in route that is best method
     if (!name || !description || !price || !catagory || !stock) {
+      console.log(name, description, price, catagory, stock);
       return res.status(400).json({
         message: "Please include all the fields",
       });
@@ -84,12 +85,11 @@ exports.deleteProduct = (req, res) => {
   product.remove((err, deletedProduct) => {
     if (err) {
       return res.status(400).json({
-        error: "Failed to delete the product"
+        error: "Deletion Failed",
       });
     }
     res.json({
-      message: "Deletion was a success",
-      deletedProduct
+      message: "Deleted Successfully",
     });
   });
 };

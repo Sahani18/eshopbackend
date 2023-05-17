@@ -13,6 +13,7 @@ const {
 const { getUserById } = require("../controllers/user");
 const { isSignedIn, isAuthenticated, isAdmin } = require("../controllers/auth");
 
+
 router.param("productId", getProductById);
 router.param("userId", getUserById);
 

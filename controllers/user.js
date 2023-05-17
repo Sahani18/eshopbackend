@@ -85,5 +85,8 @@ exports.pushOrderInPurchaseList = (req, res, next) => {
       next();
     }
   );
+};
 
+exports.pushOrderInWishList = (req, res, id) => {
+  // TODO:
 };

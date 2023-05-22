@@ -136,12 +136,12 @@ exports.updateProduct = (req, res) => {
 };
 
 exports.getAllProducts = (req, res) => {
-  let limit = req.query.limit ? parseInt(req.query.limit) : 8;
+ /*  let limit = req.query.limit ? parseInt(req.query.limit) : 8; */
   let sortBy = req.query.sortBy ? req.query.sortBy : "_id";
   Product.find()
     .select("-photo") //-photo means we dont want to display photo coz it will become bulky
     .populate("catagory")
-    .limit(limit) // we are limiting the no of result
+   /*  .limit(limit) // we are limiting the no of result */
     .sort([[sortBy, "asc"]]) //sort syntax- [[sortBy,"what conditon"]]
     .exec((err, products) => {
       if (err) {

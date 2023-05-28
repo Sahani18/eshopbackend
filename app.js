@@ -12,6 +12,7 @@ const userRoutes = require("./routes/user");
 const catagoryRoute = require("./routes/catagory");
 const productRoute=require("./routes/product")
 const orderRoute=require("./routes/order")
+const paymentRoute=require("./routes/payment")
 
 // DB CONNECTION
 mongoose
@@ -42,7 +43,7 @@ app.use("/api", userRoutes);
 app.use("/api", catagoryRoute);
 app.use("/api", productRoute);
 app.use("/api", orderRoute);
-
+app.use("/api",paymentRoute)
 
 // STARTING A SERVER
 

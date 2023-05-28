@@ -12,7 +12,7 @@ exports.signup = (req, res) => {
   user.save((err, user) => {
     if (err) {
       return res.status(400).json({
-        err: "User NOT saved",
+        err: "Invalid email and password",
       });
     }
     res.json({
@@ -36,7 +36,7 @@ exports.signin = (req, res) => {
   User.findOne({ email }, (err, user) => {
     if (err || !user) {
       return res.status(400).json({
-        error: "User NOT Found",
+        error: "Invalid email and password",
       });
     }
     //AUTHENTICATE USER BY MATCHING PWD USING VIRTUAL FIELD WE CREATED

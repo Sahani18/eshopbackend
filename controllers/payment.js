@@ -5,8 +5,9 @@ const uuid = require("uuid/v4");
 
 exports.StripePayment = (req, res) => {
   const { amount, token } = req.body;
+  console.log(amount);
 
-  const idempotencyKey = uuid; //responsible for not charging the user again
+  const idempotencyKey = uuid(); //responsible for not charging the user again
 
   return stripe.customers
     .create({
@@ -20,7 +21,7 @@ exports.StripePayment = (req, res) => {
             amount: amount,
             currency: "INR",
             customer: customer.id,
-            reciept_email: token.email,
+            receipt_email: token.email,
             shipping: {
               name: token.card.name,
               address: {

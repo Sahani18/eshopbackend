@@ -1,16 +1,20 @@
 const express = require("express");
-const { StripePayment, PaypalPayment } = require("../controllers/payment");
+const { StripePayment, braintreePayment,getToken } = require("../controllers/payment");
 const { isAuthenticated, isSignedIn } = require("../controllers/auth");
+const { getUserById } = require("../controllers/user");
+
 
 var router = express.Router();
 router.param("userId", getUserById);
 
+router.get("/payment/gettoken/:userId", isAuthenticated, isSignedIn, getToken);
+
 router.post("/payment/stripe", StripePayment);
 router.post(
-  "/payment/paypal/:userId",
+  "/payment/braintree/:userId",
   isAuthenticated,
   isSignedIn,
-  PaypalPayment
+  braintreePayment
 );
 
 module.exports = router;

@@ -4,13 +4,14 @@ const stripe = require("stripe")(
 const uuid = require("uuid/v4");
 const braintree = require("braintree");
 
-var gateway = braintree.connect({
+const gateway = new braintree.BraintreeGateway({
   environment: braintree.Environment.Sandbox,
   merchantId: "f68w6ttscw3kbmqc",
   publicKey: "7z8t3k9r36vvf3v5",
   privateKey: "47e4224bf801ef5891a96743d5a8aa8b",
 });
 
+//TODO: Stripe payment
 exports.StripePayment = (req, res) => {
   const { amount, token } = req.body;
   console.log(amount);
@@ -50,24 +51,34 @@ exports.StripePayment = (req, res) => {
     });
 };
 
-exports.PaypalPayment = (req, res) => {
-  const { userId, token, amount,nonce } = req.body;
+//TODO: Braintree/paypal payment
+
+exports.getToken = (req, res) => {
+  gateway.clientToken.generate({}, function (err, response) {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.send(response);
+    }
+  });
+};
+
+exports.braintreePayment = (req, res) => {
+  let nonceFromTheClient = req.body.paymentMethodNonce;
+  let amountFromClient = req.body.amount;
   gateway.transaction
     .sale({
-      amount: `${amount}`,
-      paymentMethodNonce: `${nonce}`,
+      amount: amountFromClient,
+      paymentMethodNonce: nonceFromTheClient,
       options: {
         submitForSettlement: true,
       },
-    })
-    .then(function (result) {
-      if (result.success) {
-        console.log("Transaction ID: " + result.transaction.id);
+    },function(err,result){
+      if (err) {
+        res.status(500).json(err);
       } else {
-        console.error(result.message);
+        res.json(result);
       }
     })
-    .catch(function (err) {
-      console.error(err);
-    });
+    
 };

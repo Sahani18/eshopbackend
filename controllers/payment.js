@@ -66,19 +66,20 @@ exports.getToken = (req, res) => {
 exports.braintreePayment = (req, res) => {
   let nonceFromTheClient = req.body.paymentMethodNonce;
   let amountFromClient = req.body.amount;
-  gateway.transaction
-    .sale({
+  gateway.transaction.sale(
+    {
       amount: amountFromClient,
       paymentMethodNonce: nonceFromTheClient,
       options: {
         submitForSettlement: true,
       },
-    },function(err,result){
+    },
+    function (err, result) {
       if (err) {
         res.status(500).json(err);
       } else {
         res.json(result);
       }
-    })
-    
+    }
+  );
 };

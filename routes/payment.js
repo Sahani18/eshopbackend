@@ -5,7 +5,7 @@ const { getUserById } = require("../controllers/user");
 
 
 var router = express.Router();
-router.param("userId", getUserById);
+
 
 router.get("/payment/gettoken/:userId", isAuthenticated, isSignedIn, getToken);
 

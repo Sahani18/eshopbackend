@@ -1,5 +1,5 @@
 const stripe = require("stripe")(
-  "sk_test_51NCgUpSA4QKHgmwbMXlI5zkDR2MAgSc6jklje1xe90n2J5wdPuDDhxKiUJPddbBfomf0EXeEzxiwvFujcQHtXbBx0074XYaYpD"
+  "sk_test_51NCgUpSA4QKHgmwbm1EFVNLXCtl82TiOpcKzph63EvcrxKTuEJiCPohU0syTZWSejBOigCEvzlqHp23BjxABvCBR00H011aczd"
 );
 const uuid = require("uuid/v4");
 const braintree = require("braintree");
@@ -14,7 +14,7 @@ const gateway = new braintree.BraintreeGateway({
 //TODO: Stripe payment
 exports.StripePayment = (req, res) => {
   const { amount, token } = req.body;
-  console.log(amount);
+
 
   const idempotencyKey = uuid(); //responsible for not charging the user again
 
@@ -24,11 +24,12 @@ exports.StripePayment = (req, res) => {
       source: token.id,
     })
     .then((customer) => {
-      stripe.charges
+      stripe.paymentIntents
         .create(
           {
-            amount: amount,
+            amount: amount/100,
             currency: "INR",
+            payment_method_types: ["card"],
             customer: customer.id,
             receipt_email: token.email,
             shipping: {

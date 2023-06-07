@@ -1,7 +1,7 @@
 const express = require("express");
 const { StripePayment, braintreePayment,getToken } = require("../controllers/payment");
 const { isAuthenticated, isSignedIn } = require("../controllers/auth");
-const { getUserById } = require("../controllers/user");
+
 
 
 var router = express.Router();

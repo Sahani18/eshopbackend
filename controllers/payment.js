@@ -4,7 +4,14 @@ const stripe = require("stripe")(
 const uuid = require("uuid/v4");
 const braintree = require("braintree");
 
-const gateway = new braintree.BraintreeGateway({
+/* const gateway = new braintree.BraintreeGateway({
+  environment: braintree.Environment.Sandbox,
+  merchantId: "f68w6ttscw3kbmqc",
+  publicKey: "7z8t3k9r36vvf3v5",
+  privateKey: "47e4224bf801ef5891a96743d5a8aa8b",
+}); */
+
+var gateway = new braintree.BraintreeGateway({
   environment: braintree.Environment.Sandbox,
   merchantId: "f68w6ttscw3kbmqc",
   publicKey: "7z8t3k9r36vvf3v5",
@@ -15,7 +22,6 @@ const gateway = new braintree.BraintreeGateway({
 exports.StripePayment = (req, res) => {
   const { amount, token } = req.body;
 
-
   const idempotencyKey = uuid(); //responsible for not charging the user again
 
   return stripe.customers
@@ -24,10 +30,11 @@ exports.StripePayment = (req, res) => {
       source: token.id,
     })
     .then((customer) => {
+      console.log("CUSTOMER", customer);
       stripe.paymentIntents
         .create(
           {
-            amount: amount/100,
+            amount: amount / 100, //coz in frontend we are multiplying amt by 100 so that correct amt is displayed on stripe payment card
             currency: "INR",
             payment_method_types: ["card"],
             customer: customer.id,
@@ -46,6 +53,8 @@ exports.StripePayment = (req, res) => {
           { idempotencyKey }
         )
         .then((result) => {
+          console.log("Result", result);
+
           return res.status(200).json(result);
         })
         .catch((err) => console.log(err));
@@ -55,12 +64,12 @@ exports.StripePayment = (req, res) => {
 //TODO: Braintree/paypal payment
 
 exports.getToken = (req, res) => {
-  gateway.clientToken.generate({}, function (err, response) {
+  gateway.clientToken.generate({}, (err, response) => {
     if (err) {
-      res.status(500).send(err);
-    } else {
-      res.send(response);
+      return res.status(400).send("Error generating client token:", err);
     }
+    const clientToken = response.clientToken;
+    return clientToken;
   });
 };
 

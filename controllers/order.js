@@ -2,7 +2,7 @@ const { Order, ProductCart } = require("../models/order"); //coz we r throwing 2
 
 exports.getOrderById = (req, res, next, id) => {
   Order.findById(id)
-    .populate("products.product", "name price") //we are picking 1 product & bringing 2 info name & price from them
+    .populate("products.product", "name price") //we are picking 1 product(i.e, products.product ) & bringing 2 info name & price from them(i.e, name price) note - we did not miss comma b/w name and price it is the systax to do
     .exec((err, order) => {
       if (err) {
         res.status(400).json({
